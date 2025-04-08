@@ -12,19 +12,18 @@ RUN apk add --no-cache --virtual .build-deps \
 
 COPY . .
 
-RUN go build -ldflags "-s -w" -o treehole
+RUN go build -ldflags "-s -w" -o app
 
 FROM alpine
 
 WORKDIR /app
 
-COPY --from=builder /app/treehole /app/
+COPY --from=builder /app/app /app/
 COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
-COPY data data
 
 ENV TZ=Asia/Shanghai
 ENV MODE=production
 
 EXPOSE 8000
 
-ENTRYPOINT ["./treehole"]
+ENTRYPOINT ["./app"]

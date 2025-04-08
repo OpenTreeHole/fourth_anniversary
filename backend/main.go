@@ -48,7 +48,7 @@ func main() {
 
 	// Create a custom HTTP server with Gin
 	srv := &http.Server{
-		Addr:    ":8080",
+		Addr:    ":8000",
 		Handler: app,
 	}
 
