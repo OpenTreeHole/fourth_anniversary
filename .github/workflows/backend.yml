@@ -1,7 +1,7 @@
 name: Production Build
 on:
   push:
-    branches: [ master ]
+    branches: [master]
 
 env:
   APP_NAME: get_special_hole
@@ -14,35 +14,25 @@ jobs:
         working-directory: ./backend
     steps:
       - name: Checkout
-        uses: actions/checkout@master
-
-#      - name: Set up Go
-#        uses: actions/setup-go@master
-#        with:
-#          go-version: 1.21.1
-#
-#      - run: go version
-#      - name: Automated Testing
-#        env:
-#          MODE: test
-#        run: go test -v -count=1 -json -tags release ./tests/...
+        uses: actions/checkout@v4
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@master
+        uses: docker/setup-qemu-action@v2
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@master
+        uses: docker/setup-buildx-action@v2
 
       - name: Login to DockerHub
-        uses: docker/login-action@master
+        uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@master
+        uses: docker/build-push-action@v4
         with:
+          context: ./backend  # Point to the backend directory
+          file: ./backend/Dockerfile  # Explicit path to Dockerfile
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.APP_NAME }}:latest
