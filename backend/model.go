@@ -55,7 +55,7 @@ type Floor struct {
 	HoleID int `json:"hole_id"`
 
 	// many to many mentions
-	Mention Floors `json:"mention"`
+	Mention Floors `json:"mention" gorm:"many2many:floor_mention;"`
 }
 
 type Floors []*Floor
