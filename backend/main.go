@@ -39,7 +39,7 @@ func Init() (app *gin.Engine) {
 
 	// 	app.Get("/floors/:id<int>/special", GetSpecialFloor)
 	// Define a route with an integer ID parameter and an empty path (might be a subgroup)
-	app.GET("/floors/:id/special", ListFloorsInASpecialHole)
+	app.GET("/api/floors/:holeID/_special", ListFloorsInASpecialHole)
 	return app
 }
 
