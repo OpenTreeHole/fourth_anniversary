@@ -5,9 +5,9 @@ import (
 )
 
 type ListModel struct {
-	Size    int    `json:"size" query:"size" form:"size" default:"30" validate:"min=0,max=50"`          // length of object array
-	Offset  int    `json:"offset" query:"offset" form:"offset" default:"0" validate:"min=0"`              // offset of object array
-	Sort    string `json:"sort" query:"sort" form:"sort" default:"asc" validate:"oneof=asc desc"`       // Sort order
+	Size    int    `json:"size" query:"size" form:"size" default:"30" validate:"min=0,max=50"`              // length of object array
+	Offset  int    `json:"offset" query:"offset" form:"offset" default:"0" validate:"min=0"`                // offset of object array
+	Sort    string `json:"sort" query:"sort" form:"sort" default:"asc" validate:"oneof=asc desc"`           // Sort order
 	OrderBy string `json:"order_by" query:"order_by" form:"order_by" default:"id" validate:"oneof=id like"` // SQL ORDER BY field
 }
 type Floor struct {
@@ -56,6 +56,10 @@ type Floor struct {
 
 	// many to many mentions
 	Mention Floors `json:"mention" gorm:"many2many:floor_mention;"`
+}
+
+func (Floor) TableName() string {
+	return "floor"
 }
 
 type Floors []*Floor
