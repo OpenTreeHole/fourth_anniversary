@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"net/http"
@@ -34,7 +35,16 @@ func ListFloorsInASpecialHole(c *gin.Context) {
 		c.String(http.StatusInternalServerError, "failed to make query set: %v", err)
 		return
 	}
-	result := querySet.Order(query.OrderBy + " " + query.Sort).
+
+	validSorts := map[string]bool{"asc": true, "desc": true, "": true}
+	validOrderBy := map[string]bool{"id": true, "like": true, "": true}
+
+	if !validSorts[query.Sort] || !validOrderBy[query.OrderBy] {
+		c.String(http.StatusBadRequest, "invalid sort or order_by")
+		return
+	}
+
+	result := querySet.Order(fmt.Sprintf("`%s` %s", query.OrderBy, query.Sort)).
 		Find(&floors)
 	if result.Error != nil {
 		c.String(http.StatusInternalServerError, "failed to query floors: %v", result.Error)
